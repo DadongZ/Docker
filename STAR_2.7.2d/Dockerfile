@@ -23,6 +23,8 @@ RUN ln -s /STAR-2.7.2d/source/STAR /usr/bin/STAR
 
 WORKDIR /data
 
+VOLUME /var/lib/STAR
+
 LABEL maintainer="doubleomics@gmail.com"
 LABEL VERSION="2.7.2d"
 

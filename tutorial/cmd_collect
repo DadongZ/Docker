@@ -1,0 +1,3 @@
+docker image prune #just dangling images
+docker image prune -a #all images not using
+docker system df
