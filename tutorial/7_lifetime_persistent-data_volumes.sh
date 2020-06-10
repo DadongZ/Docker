@@ -36,3 +36,27 @@ docker volume ls
 
 #-v vlumename:location
 docker container run -d --name mysql -e MYSQL_ALLOW-EMPTY_PASSWORD=True -v mysql-db:/var/lib/mysql mysql
+docker volume ls
+docker volume inspect mysql-db
+#[
+#{
+#    "CreatedAt": "2020-05-31T15:56:26Z",
+#    "Driver": "local",
+#    "Labels": null,
+#    "Mountpoint": "/var/lib/docker/volumes/mysql-db/_data",
+#    "Name": "mysql-db",
+#    "Options": null,
+#    "Scope": "local"
+#
+#}
+#]
+
+#create volume at runtime
+
+docker volume create --help
+
+##################################################################################################################################
+#bind mounting
+##-v /host/path:/container/path
+## may not work for wsl-2
+docker container run -d -p 80:80 --name nginx -v $(pwd):/usr/share/nginx/html nginx
