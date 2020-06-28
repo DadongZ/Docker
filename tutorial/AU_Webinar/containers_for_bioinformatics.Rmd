@@ -1,0 +1,100 @@
+---
+title: New features in Docker release 19.03 
+author: Dadong Zhang
+output: html_document
+---
+
+# Global settings
+```{css, echo=T}
+.inputcode{
+    background-color: #90EE90
+    }
+.outputcode{
+    background-color: #B0C4DE
+}
+```
+
+```{r, echo=T}
+knitr::opts_chunk$set(comment="",
+                      message=FALSE,
+                      class.source="inputcode",
+                      class.output="outputcode", 
+                      tidy=TRUE, 
+                      cache=FALSE)
+options(width=100)
+
+```
+
+
+## [Install Docker buildx](https://github.com/docker/buildx)
+
+
+```{bash, eval=F}
+docker buildx COMMAND --help
+
+```
+
+## Docker context (Change DOCKER_HOST) 
+
+```{bash, eval=F}
+docker context
+docker context ls
+```
+
+```{bash, eval=F}
+##setting up romote console like digitalocean node1
+adduser alex
+sudo usermod -aG docker alex
+exit
+```
+
+```{bash, eval=F}
+#change host to digital ocean node1
+DOCKER_HOST=ssh://alex@192.81.209.233"
+docker context ls
+docker run -d -p 8080:80 nginx
+#change host back to local
+DOCKER_HOST="tcp://localhost:2375"
+```
+
+```{bash, eval=F}
+docker context create --docker "host=ssh://alex@192.81.209.233" dz1
+docker context use dz1
+docker run -d -p 8080:80 nginx
+#change host back to local
+DOCKER_HOST="tcp://localhost:2375"
+docker --context default ps
+```
+
+## SSH Connection
+```{bash, eval=F}
+docker context create --docker "host=ssh://aws-ec2-manager" aws
+docker context use aws
+docker run -d -p 8080:80 nginx
+#change host back to local
+DOCKER_HOST="tcp://localhost:2375"
+docker context use default
+```
+
+## Docker app and image packaging
+* [Docker app](https://github.com/docker/app#:~:text=Docker%20App%20is%20a%20Cloud,microservices%20as%20a%20single%20entity.&text=By%20leveraging%20containers%2C%20Docker%20App,the%20application%20through%20container%20registries.)
+  
+* Install
+```{bash, eval=F}
+    curl -L https://github.com/docker/app/releases/download/v0.8.0/docker-app-linux.tar.gz | tar xzvf -
+    mkdir -p ~/.docker/cli-plugins && cp "/tmp/docker-app-plugin-${OSTYPE}" ~/.docker/cli-plugins/docker-app
+    #update ~/.docker/config.json
+    docker app
+
+```
+* Examples <https://github.com/mikesir87/swarm-viz>
+    
+
+## rootless mode in docker engine 
+* info: <https://get.docker.com/rootless> \
+    need to channge DOCKER_HOST env. \
+    Only can expose to high port 30000+ \
+* Use Dockerfile and docker-entrypoint.sh \ 
+    [example](https://github.com/docker-library/mysql/tree/bc6e37a2bed792b1c4fc6ab1ec3ce316e6a5f061/8.0)
+
+* single node swarm is better than compose``

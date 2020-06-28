@@ -1,0 +1,13 @@
+#ubuntu running under WSL2 not seeing Docker daemon at unix:///var/run/docker.sock
+#https://github.com/docker/for-win/issues/5096
+powershell
+
+docker context ls
+docker ps
+Enable WSL integration in Docker settings>Resources
+sudo service docker status
+sudo service docker start
+
+#solve WSL2 docker: Error response from daemon: cgroups: cannot find cgroup mount destination: unknown.
+sudo mkdir /sys/fs/cgroup/systemd
+sudo mount -t cgroup -o none,name=systemd cgroup /sys/fs/cgroup/systemd
